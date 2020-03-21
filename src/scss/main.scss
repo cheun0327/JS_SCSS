@@ -1,0 +1,144 @@
+@import "config";
+
+/*mixin 정의 할 때는 보편적, 잘 변하지 않는걸로 정의해야한다. 인자로 받아서 사용하는거가 좋다.*/
+@mixin default-box ($width, $height:100px){ /*함수처럼 인자 받아서 사용*/
+    width: $width;
+    height: $height;
+    border: {
+        width: 1px;
+        style: solid;
+        color: black;
+        radius : 5px;
+    }
+}
+
+@mixin flex-box($align, $justify, $direction: row, $wrap: wrap) { /*flex에는 place가 없으니까 얘로 대체해서 사용*/
+    display: flex;
+    align-items: $align;
+    justify-content: $justify;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+}
+
+$screen-width: 100vw;
+@function columns($size:1, $columns: 12){ /*css는 calculator사용해야하는데 얘는 연산가능*/
+    @return $screen-width * ($size / $columns);
+}
+
+@function color-picker($color-name){
+    @if($color-name == orange){
+        @return rgb(255, 165, 0);
+    }@else if($color-name == banana){
+        @return yellow;
+    }@else if($color-name == melon){
+        @return green;
+    }@else{
+        @return black;
+    }
+}
+
+@for $i from 1 through 3{
+    /*1~3까지*/
+    button:nth-child(#{$i}){
+        width : 100px * $i;
+    }
+}
+
+@for $i from 1 to 3{
+    /*1~2까지*/
+}
+
+.custom-container{
+    $columns-num: 12;
+    width: $screen-width;
+    $height: 300px;
+    $color: orange;
+
+    .custom-col-1{
+        width: columns(1, $columns-num);/*전체 사이즈의 1/6만큼을 가져감*/
+        height: $height;
+        background-color: color-picker(orange);
+        margin: 0;
+        display: inline-block;
+    }
+    .custom-col-2{
+        width: columns(2, $columns-num);
+        height: $height;
+        background-color: color-picker(banana);
+        margin: 0;
+        display: inline-block;
+    }
+    .custom-col-3{
+        width: columns(3, $columns-num);
+        height: $height;
+        background-color: color-picker(melon);
+        margin: 0;
+        display: inline-block;
+    }
+    .custom-col-4{
+        width: columns(4, $columns-num);
+        height: $height;
+        background-color: $color;
+        margin: 0;
+        display: inline-block;
+    }
+    .custom-col-5{
+        width: columns(5, $columns-num);
+        height: $height;
+        background-color: $color;
+        margin: 0;
+        display: inline-block;
+    }
+    .custom-col-6{
+        width: columns(6, $columns-num);
+        height: $height;
+        background-color: $color;
+        margin: 0;
+        display: inline-block;
+    }
+}
+
+.flex-center{
+    @include flex-box(center, center); /*부트스트랩도 이런식으로 쓰여져있다.*/
+}
+
+body{
+    background-color: beige;
+    $size: 300px !global;
+}
+
+h1 {
+  color: $color-primary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.box {
+    $size: 200px !default; /*size 변수가 있으면 사용하고 없으면 얘로한다.*/
+    
+    background-color: #42b883;
+    display: grid;
+    place-items: center;
+  
+    @include default-box(300px, 300px);
+
+    margin: {
+        top: 50px;
+        left: 50px;
+    }
+
+    a {
+      color: white;
+      font-size: 40px;
+
+      &:visited{
+          color : black;
+      }
+    }
+  }
+
+  .button-box{
+      @include default-box(200px);
+  }
